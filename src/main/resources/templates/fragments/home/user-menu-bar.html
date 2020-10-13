@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+            xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div class="col-md-3" th:fragment="user-menu-bar">
+    <nav class="nav flex-column side-nav">
+        <a class="nav-link active icon" th:href="@{/userProfile}">
+            <i class="fa fa-user"></i>Thông tin tài khoản
+        </a>
+        <a class="nav-link icon" th:href="@{/changePassword}">
+            <i class="fa fa-apple"></i>Thay đổi mật khẩu
+        </a>
+        <a class="nav-link icon" th:href="@{/real-estate/create}">
+            <i class="fa fa-book"></i>Đăng tin
+        </a>
+
+        <a class="nav-link icon" th:href="@{/real-estate/manage-post/1}">
+            <i class="fa fa-anchor"></i>Quản lý bài đăng
+        </a>
+
+        <a class="nav-link icon" th:href="@{/real-estate/contact-post/1}">
+            <i class="fa fa-list"></i> Bất động sản đã liên hệ
+        </a>
+        <a class="nav-link icon" th:href="@{/real-estate/list-customer/1}">
+            <i class="fa fa-money"></i>Danh sách khách hàng
+        </a>
+        <div sec:authorize="hasRole('ADMIN')">
+            <a class="nav-link icon" th:href="@{/admin/manage-ads/1}">
+                <i class="fa fa-money"></i>Quản lý quảng cáo
+            </a>
+
+            <a class="nav-link icon" th:href="@{/admin/create-ads/1}">
+                <i class="fa fa-money"></i>Tạo quảng cáo
+            </a>
+        </div>
+    </nav>
+</div>
+
+</html>
+
+

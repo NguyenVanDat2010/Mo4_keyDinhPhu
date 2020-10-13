@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div class="main-navigation" th:fragment="main-navigation">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light justify-content-between">
+            <a class="navbar-brand" th:href="@{/}">
+                <img th:src="@{/assets/img/logo-inverted.png}" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar">
+                <!--Main navigation list-->
+                <ul class="navbar-nav">
+                    <li class="nav-item active ">
+                        <a class="nav-link" th:href="@{/}">Trang chủ</a>
+                    </li>
+
+                    <li class="nav-item has-child">
+                        <a class="nav-link" >Loại bất động sản</a>
+                        <!-- 2nd level -->
+                        <ul class="child">
+                            <li class="nav-item">
+                                <a th:href="@{/search/1?real_estate_type=&province=&category_type=Căn+hộ&price=&direction=}" class="nav-link">Căn  hộ</a>
+                            </li>
+                            <li class="nav-item">
+                                <a th:href="@{/search/1?real_estate_type=&province=&category_type=Nhà&price=&direction=}" class="nav-link">Nhà</a>
+                            </li>
+                            <li class="nav-item">
+                                <a th:href="@{/search/1?real_estate_type=&province=&category_type=Nhà+phố&price=&direction=}" class="nav-link">Nhà phố</a>
+                            </li>
+                            <li class="nav-item">
+                                <a th:href="@{/search/1?real_estate_type=&province=&category_type=Biệt+thự&price=&direction=}" class="nav-link">Biệt thự</a>
+                            </li>
+                            <li class="nav-item">
+                                <a th:href="@{/search/1?real_estate_type=&province=&category_type=Biệt+thự&price=&direction=}" class="nav-link">Nhà riêng</a>
+                            </li>
+                            <li class="nav-item">
+                                <a th:href="@{/search/1?real_estate_type=&province=&category_type=Đất+nền&price=&direction=}" class="nav-link">Đất nền</a>
+                            </li>
+                        </ul>
+                        <!-- end 2nd level -->
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="btn btn-primary text-caps btn-rounded btn-framed">Liên hệ quảng cáo</a>
+                    </li>
+                </ul>
+                <!--Main navigation list-->
+            </div>
+            <!--end navbar-collapse-->
+        </nav>
+        <!--end navbar-->
+    </div>
+    <!--end container-->
+</div>
+
+</html>

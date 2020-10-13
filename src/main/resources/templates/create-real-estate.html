@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/admin/head.html :: admin-head(~{ :: .admin-title })">
+
+    <title class="admin-title">User Profile</title>
+    <!-- Tell the browser to be responsive to screen width -->
+
+</head>
+<body class="hold-transition sidebar-mini">
+
+<div class="wrapper">
+    <!-- Navbar -->
+
+    <nav th:replace="fragments/admin/navbar-right.html :: navbar-right">
+    </nav>
+
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+
+    <aside th:replace="fragments/admin/menu-bar.html :: menu-bar">
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+
+        <!--        <section th:replace="fragments/admin/content-header.html :: content-header(~{:: .pageTitle},~{:: .my-content})">-->
+        <!--            <li class="pageTitle"><a href="#">Home</a></li>-->
+        <!--            <span class="my-content" th:text="'Profile: '+${session.loginUser.fullName}"></span>-->
+        <!--        </section>-->
+        <section class="content">
+            <div class="container-fluid">
+
+            <div class="card card-default" style="margin-top:15px;">
+                <div class="card-header">
+                    <h3 class="card-title">Tạo bài đăng mới</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div style="margin-bottom: 25px" class="text-danger" th:if="${message != null}">
+                        <ul>
+                            <li th:text="${message}" />
+                        </ul>
+                    </div>
+
+                    <form  method="post" th:object="${realEstateDTO}" th:action="@{/real-estate/create}" enctype="multipart/form-data" id="create-estate-form">
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{realEstateType}" value="Bán">
+                            <label class="form-check-label" >Bán</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{realEstateType}" value="Thuê">
+                            <label class="form-check-label" >Thuê</label>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Loại Bất động sản *</label>
+
+                                    <select class="form-control select2bs4" style="width: 100%;" name="category" th:field="*{category}">
+                                        <th:block th:each="cat : ${categories}">
+                                            <option th:value="${cat.categoryName}" th:text="${cat.categoryName}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Thành phố *</label>
+
+                                    <select class="form-control select2bs4" id="province-option" style="width: 100%;" th:field="*{province}" >
+                                        <th:block th:each="pro : ${provinces}">
+                                            <option th:value="${pro.name}" th:text="${pro.name}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Quận Huyện *</label>
+
+                                    <select class="form-control select2bs4" id="district-option" style="width: 100%;" th:field="*{district}"  >
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Phường xã *</label>
+                                    <select class="form-control select2bs4" id="ward-option" style="width: 100%;"  th:field="*{ward}" >
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Địa Chỉ *</label>
+                                    <input type="text" class="form-control" th:field="*{address}" placeholder="Địa chỉ">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Tiêu đề *</label>
+                                    <input type="text" class="form-control" th:field="*{title}" placeholder="Tiêu đề" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Mô tả *</label>
+                                    <textarea class="textarea" placeholder="Place some text here"
+                                              style="width: 100%; height: 350px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" th:field="*{description}" ></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Tổng giá *</label>
+                                    <input th:field="*{totalprice}" type="number" class="form-control" placeholder="Tổng giá">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Đơn vị</label>
+                                    <select class="form-control" name="don-vi" id="donvi">
+                                        <option value="tỷ">Tỷ</option>
+                                        <option value="triệu">Triệu</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Đơn giá *</label>
+                                    <input th:field="*{priceUnit}" type="number" class="form-control" placeholder="Đơn giá">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Đơn giá</label>
+                                    <input class="form-control" type="text" value="triệu VND/m2" name="dongia" id="dongia" readonly/>
+
+                                </div>
+                            </div>
+                        </div>
+<!--                        areatypes    -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Loại diện tích *</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" th:field="*{areaType}">
+                                        <th:block th:each="area : ${areatypes}">
+                                            <option th:value="${area.areaName}" th:text="${area.areaName}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Tổng diện tích(m2) *</label>
+                                    <input type="text" class="form-control" th:field="*{totalArea}" placeholder="/m2">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Hướng *</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" th:field="*{direction}">
+                                        <th:block th:each="direct : ${directions}">
+                                            <option th:value="${direct.directionName}" th:text="${direct.directionName}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Số phòng ngủ *</label>
+                                    <input th:field="*{bedRoomQuantity}" type="number" class="form-control" placeholder="Số phòng ngủ">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Số phòng tắm</label>
+                                    <input th:field="*{bathRoomQuantity}" type="number" class="form-control" placeholder="Số phòng tắm">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Pháp lý *</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" th:field="*{legalPaper}">
+                                        <th:block th:each="legal : ${legals}">
+                                            <option th:value="${legal.legalPaperName}" th:text="${legal.legalPaperName}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Tiện ích bên trong: </label>
+                                    <input type="checkbox" id="internet" name="internals" value="internet" th:checked="${internalUtils.internet}"> <label for="internet">Internet</label>
+                                    <input type="checkbox" id="television" name="internals" value="television" th:checked="${internalUtils.television}">
+                                    <label for="television">Television</label>
+                                    <input type="checkbox" id="toilet" name="internals" value="toilet" th:checked="${internalUtils.toilet}">
+                                    <label for="toilet">Toilet</label>
+                                    <input type="checkbox" id="air-condition" name="internals" value="aircondition" th:checked="${internalUtils.airCondition}">
+                                    <label for="air-condition">Air Condition</label>
+                                    <input type="checkbox" id="kitchen" name="internals" value="kitchen" th:checked="${internalUtils.kitchen}">
+                                    <label for="kitchen">Kitchen</label>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Tiện ích bên ngoài: </label>
+                                    <input type="checkbox" id="balcony" name="externals" value="balcony" th:checked="${externalUtils.balcony}">
+                                    <label for="balcony">Balcony</label>
+                                    <input type="checkbox" id="garden" name="externals" value="garden" th:checked="${externalUtils.garden}">
+                                    <label for="garden">Garden</label>
+                                    <input type="checkbox" id="swimming" name="externals" value="swimmingpool" th:checked="${externalUtils.swimmingPool}">
+                                    <label for="swimming">Swimming Pool</label>
+                                    <input type="checkbox" name="externals" id="services" value="services" th:checked="${externalUtils.services}">
+                                    <label for="services">Services</label>
+                                    <input type="checkbox" name="externals" id="security" value="security" th:checked="${externalUtils.security}">
+                                    <label for="security">Security</label>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Tiện ích xung quanh: </label>
+                                    <input type="checkbox" name="arounds" value="hospital" id="hospital" th:checked="${aroundUtils.hospital}">
+                                    <label for="hospital">Hospital</label>
+                                    <input type="checkbox" name="arounds" id="market" value="market" th:checked="${aroundUtils.market}">
+                                    <label for="market">Market</label>
+                                    <input type="checkbox" name="arounds" value="police" id="police" th:checked="${aroundUtils.police}">
+                                    <label for="police">Police</label>
+                                    <input type="checkbox" name="arounds" value="school" th:checked="${aroundUtils.school}" id="school" >
+                                    <label for="school">School</label>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="custom-file-label" for="customFile">Chọn file</label>
+                                    <input type="file" class="custom-file-input" id="customFile" name="files" multiple>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <input type="submit" class="btn btn-outline-primary" value="Tạo bài mới" id="register"/>
+
+                    </form>
+                </div>
+                <!-- /.card-body -->
+                <div th:replace="fragments/admin/card-footer.html" class="card-footer">
+
+                </div>
+            </div>
+        <!-- /.card -->
+            </div>
+        </section>
+
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer class="main-footer" th:replace="fragments/admin/footer.html :: footer">
+
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside th:replace="fragments/admin/footer.html :: control-sidebar">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<div id="foot-script" th:replace="fragments/admin/foot-script.html :: foot-script">
+</div>
+
+<script>
+
+    $(document).ready(function(){
+
+        $('#province-option').change(function(event){
+
+            let provinceName=$('#province-option').val();
+            $.ajax({
+                headers:{
+                    'Accept':'application/json',
+                    'Content-Type':'application/json'
+                },
+                type:"GET",
+                data:"province="+provinceName,
+                url:"/real-estate/get-district",
+                success:function(district){
+
+                    let content;
+                    for (let i=0;i<district.length;i++){
+                        content+=`<option value="${district[i].name}">${district[i].name}</option>`;
+                    }
+                    document.getElementById('district-option').innerHTML=content;
+                }
+            });
+            event.preventDefault();
+        }) ;
+
+
+        $('#district-option').change(function(event){
+
+            let districtName=$('#district-option').val();
+
+            $.ajax({
+                headers:{
+                    'Accept':'application/json',
+                    'Content-Type':'application/json'
+                },
+                type:"GET",
+                data:"district="+districtName,
+                url:"/real-estate/get-ward",
+                success:function(ward){
+
+                    let content;
+                    for (let i=0;i<ward.length;i++){
+                        content+=`<option value="${ward[i].name}">${ward[i].name}</option>`;
+                    }
+                    document.getElementById('ward-option').innerHTML=content;
+                }
+            });
+            event.preventDefault();
+        }) ;
+
+
+    });
+
+
+</script>
+<script>
+    $().ready(function() {
+        $("#create-estate-form").validate({
+            onfocusout: false,
+            onkeyup: false,
+            onclick: false,
+            rules: {
+                "totalprice": {
+                    required: true,
+                    number:true,
+                    maxlength: 8
+                },
+                "areaType":{
+                  required:true
+                },
+                "priceUnit": {
+                    required: true,
+                    number:true,
+                    maxlength: 15
+                },
+                "category":{
+                    required:true
+                },
+                "district":{
+                    required:true
+                },
+                "ward":{
+                    required:true
+                },
+                "address":{
+                    required:true
+                },
+                "title":{
+                    required:true
+                },
+                "description":{
+                    required:true
+                }
+            },
+            messages: {
+                "totalprice":{
+                    required:"Bắt buộc nhập tổng giá",
+                    number:"Không phải là số",
+                    maxlength:"Tối đa 8 ký tự"
+                },
+                "areaType":{
+                    required:"Bắt buộc nhập loại diện tích"
+                },
+                "priceUnit":{
+                    required:"Bắt buộc nhập đơn giá",
+                    number:"Không phải là số",
+                    maxlength:"Tối đa 15 ký tự"
+                },
+                "district":{
+                    required:"Bắt buộc nhập quận huyện"
+                },
+                "ward":{
+                    required:"Bắt buộc nhập phường xã"
+                },
+                "address":{
+                    required:"Bắt buộc nhập địa chị"
+                },
+                "title":{
+                    required:"Bắt buộc nhập tiêu đề"
+                },
+                "description":{
+                    required:"Bắt buộc nhập miêu tả"
+                }
+            }
+        });
+    });
+</script>
+<!--<script>-->
+<!--    $(function(){-->
+<!--        $("input[type='submit']").click(function(){-->
+<!--            var $fileUpload = $("input[type='file']");-->
+<!--            if (parseInt($fileUpload.get(0).files.length)>2){-->
+<!--                alert("You can only upload a maximum of 2 files");-->
+<!--            }-->
+<!--        });-->
+<!--    })​-->
+<!--</script>-->
+</body>
+</html>

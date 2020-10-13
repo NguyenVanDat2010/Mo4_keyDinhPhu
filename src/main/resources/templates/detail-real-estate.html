@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/home/head.html :: my-head(~{ :: .my-own-title})">
+
+    <title class="my-own-title">Home Page Title</title>
+
+</head>
+<body>
+<div class="page home-page">
+    <!--*********************************************************************************************************-->
+    <!--************ HERO ***************************************************************************************-->
+    <!--*********************************************************************************************************-->
+    <header class="hero has-dark-background">
+        <div class="hero-wrapper">
+
+            <!--============ Secondary Navigation ===============================================================-->
+            <div class="secondary-navigation" th:replace="fragments/home/secondary-navigation.html :: secondary-navigation">
+            </div>
+            <!--============ End Secondary Navigation ===========================================================-->
+
+            <div class="background" th:replace="fragments/home/header-background.html :: header-background">
+            </div>
+            <!--end background-->
+        </div>
+        <!--end hero-wrapper-->
+    </header>
+    <!--end hero-->
+
+    <!--*********************************************************************************************************-->
+    <!--************ CONTENT ************************************************************************************-->
+    <!--*********************************************************************************************************-->
+
+    <section class="content">
+        <section class="block">
+            <div class="container">
+                <div class="row">
+                    <!--============ Listing Detail =============================================================-->
+                    <div class="col-md-9">
+                        <!--Gallery Carousel-->
+                        <section>
+                            <h2>Gallery</h2>
+                            <!--end section-title-->
+                            <div class="gallery-carousel owl-carousel">
+                                <th:block th:each="row : ${realEstates.realEstateImages}">
+
+                                <img th:src="@{${row.image}}" >
+
+                                </th:block>
+                            </div>
+
+                        </section>
+                        <!--end Gallery Carousel-->
+                        <!--Description-->
+                        <section>
+
+                            <h2 th:text="${realEstates.title}"></h2>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3><i class="fa fa-street-view"></i> : <span th:text="${realEstates.district}"></span> <span th:text="${realEstates.ward}"></span></h3>
+                                    <h3><i class="fa fa-dollar"></i> : <span th:text="${realEstates.totalprice}"></span></h3>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3><i class="fa fa-money"></i> : <span th:text="${realEstates.priceUnit}"></span></h3>
+                                    <h3><i class="fa fa-location-arrow"></i> : <span th:text="${realEstates.totalArea}"></span>m<sup>2</sup></h3>
+                                </div>
+                            </div>
+
+                            <th:block th:if="${session.loginUser !=null}" >
+
+
+                                <th:block th:if="${session.loginUser.id != realEstates.user.id}">
+                                    <th:block th:if="${isContact==false}">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a th:href="@{/real-estate/contact/__${realEstates.id}__}" class="btn btn-primary float-left">Liên hệ</a>
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                    <th:block th:unless="${isContact==false}">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <a th:href="@{/real-estate/contact-post/1}" class="btn btn-info float-left">Đã liên hệ</a>
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                </th:block>
+                                <th:block th:unless="${session.loginUser.id != realEstates.user.id}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a th:href="@{/real-estate/edit/__${realEstates.id}__}" class="btn btn-primary float-left">Sửa thông tin</a>
+                                        </div>
+
+                                    </div>
+                                </th:block>
+
+
+                            </th:block>
+
+                            <th:block th:unless="${session.loginUser !=null}" >
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a th:href="@{/real-estate/contact/__${realEstates.id}__}" class="btn btn-primary float-left">Liên hệ</a>
+                                        </div>
+                                    </div>
+
+                            </th:block>
+
+                            <hr>
+
+                            <p th:utext="${realEstates.description}"></p>
+
+                        </section>
+                        <!--end Description-->
+                        <!--Details & Location-->
+                        <section>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h2>Thông tin cơ bản</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <dl>
+                                        <dt>Loại bất động sản</dt>
+                                        <dd th:text="${realEstates.category}"></dd>
+                                        <dt>Loại diện tích</dt>
+                                        <dd th:text="${realEstates.areaType}"></dd>
+                                        <dt>Hướng</dt>
+                                        <dd th:text="${realEstates.district}"></dd>
+                                        <dt>Pháp lý</dt>
+                                        <dd th:text="${realEstates.legalPaper}"></dd>
+
+                                    </dl>
+                                </div>
+                                <div class="col-md-6">
+                                    <dl>
+                                        <dt>Hình thức:</dt>
+                                        <dd th:text="${realEstates.realEstateType}"></dd>
+                                        <dt>Tổng diện tích</dt>
+                                        <dd> [[${realEstates.totalArea}]]m<sup>2</sup></dd>
+                                        <dt>Tổng giá:</dt>
+                                        <dd th:text="${realEstates.totalprice}"></dd>
+                                        <dt>Đơn giá:</dt>
+                                        <dd th:text="${realEstates.priceUnit}"></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </section>
+                        <!--end Details and Locations-->
+                        <!--Features-->
+                        <section>
+                            <h2>Tiện tích bên trong: </h2>
+                            <ul class="features-checkboxes columns-3">
+                                <th:block th:if="${realEstates.internalUtilities.kitchen==true}">
+                                    <li >Nhà bếp</li>
+                                </th:block>
+                                <th:block th:if="${realEstates.internalUtilities.airCondition==true}">
+                                    <li >Điều hòa</li>
+                                </th:block>
+                                <th:block th:if="${realEstates.internalUtilities.television==true}">
+                                    <li >Tivi</li>
+                                </th:block>
+                                <th:block th:if="${realEstates.internalUtilities.internet==true}">
+                                    <li >Internet</li>
+                                </th:block>
+                                <th:block th:if="${realEstates.internalUtilities.toilet==true}">
+                                    <li>Toilet</li>
+                                </th:block>
+                            </ul>
+                        </section>
+                        <!--end Features-->
+
+                        <section>
+                            <h2>Tiện tích bên ngoài: </h2>
+                            <ul class="features-checkboxes columns-3">
+                                <th:block th:if="${realEstates.externalUtilities.security==true}">
+                                    <li>An Ninh</li>
+                                </th:block>
+                                <th:block th:if="${realEstates.externalUtilities.services==true}">
+                                    <li>Dịch vụ</li>
+                                </th:block>
+                                <th:block th:if="${realEstates.externalUtilities.swimmingPool==true}">
+                                    <li >Bể bơi</li>
+                                </th:block>
+                                <th:block th:if="${realEstates.externalUtilities.garden==true}">
+                                    <li >Vườn</li>
+                                </th:block>
+                                <th:block th:if="${realEstates.externalUtilities.balcony==true}">
+                                    <li >Ban công</li>
+                                </th:block>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h2>Tiện tích xung quanh: </h2>
+                            <ul class="features-checkboxes columns-3">
+                                <th:block th:if="${realEstates.aroundUtilities.school==true}">
+                                    <li>Trường học</li>
+                                </th:block>
+                                <th:block th:if="${realEstates.aroundUtilities.police==true}">
+                                    <li >Cảnh sát</li>
+                                </th:block>
+                                <th:block th:if="${realEstates.aroundUtilities.market==true}">
+                                    <li >Siêu thị</li>
+                                </th:block>
+                                <th:block th:if="${realEstates.aroundUtilities.hospital==true}">
+                                    <li >Bệnh viện</li>
+                                </th:block>
+                            </ul>
+                        </section>
+                        <!--Author-->
+
+                        <section>
+                            <h2>Chủ sở hữu</h2>
+                            <div class="box">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="author">
+                                            <div class="author-image">
+                                                <div class="background-image">
+<!--                                                    <img th:src="@{${session.loginUser.getLogoUrl()}}" alt="">-->
+                                                    <img th:src="@{${realEstates.user.getLogoUrl()}}" alt="">
+                                                </div>
+                                            </div>
+                                            <!--end author-image-->
+                                            <div class="author-description">
+<!--                                                <h3 th:text="${session.loginUser.fullName}"></h3>-->
+                                                <h3 th:text="${realEstates.user.fullName}"></h3>
+                                                <div class="rating" data-rating="4"></div>
+
+                                                <a th:href="@{/search-user/__${realEstates.user.id}__/1}" class="text-uppercase">Danh sách bất động sản
+                                                    <span class="appendix">([[${size}]])</span>
+                                                </a>
+                                            </div>
+                                            <!--end author-description-->
+                                        </div>
+                                        <hr>
+                                        <dl>
+                                            <dt>Điện thoại</dt>
+<!--                                            <dd th:text="${session.loginUser.getPhoneNumber()}"></dd>-->
+                                            <dd th:text="${realEstates.user.getPhoneNumber()}"></dd>
+                                            <dt>Email</dt>
+<!--                                            <dd th:text="${session.loginUser.getEmail()}"></dd>-->
+                                            <dd th:text="${realEstates.user.getEmail()}"></dd>
+                                        </dl>
+                                        <!--end author-->
+                                    </div>
+                                    <!--end col-md-5-->
+                                    <div class="col-md-7">
+                                        <form class="form email">
+                                            <div class="form-group">
+                                                <label for="name" class="col-form-label">Name</label>
+                                                <input name="name" type="text" class="form-control" id="name" placeholder="Your Name">
+                                            </div>
+                                            <!--end form-group-->
+                                            <div class="form-group">
+                                                <label for="email" class="col-form-label">Email</label>
+                                                <input name="email" type="email" class="form-control" id="email" placeholder="Your Email">
+                                            </div>
+                                            <!--end form-group-->
+                                            <div class="form-group">
+                                                <label for="message" class="col-form-label">Message</label>
+                                                <textarea name="message" id="message" class="form-control" rows="4" placeholder="Hi there! I am interested in your offer ID 53951. Please give me more details."></textarea>
+                                            </div>
+                                            <!--end form-group-->
+                                            <button type="submit" class="btn btn-primary">Send</button>
+                                        </form>
+                                    </div>
+                                    <!--end col-md-7-->
+                                </div>
+                                <!--end row-->
+                            </div>
+                            <!--end box-->
+                        </section>
+                        <!--End Author-->
+                    </div>
+                    <!--============ End Listing Detail =========================================================-->
+                    <!--============ Sidebar ====================================================================-->
+                    <div class="col-md-3">
+                        <aside class="sidebar">
+                            <section>
+                                <h2>Cùng chủ đề</h2>
+                                <div class="items compact">
+                                    <th:block th:each="row : ${list}" >
+                                        <th:block th:if="${row.id != realEstates.id}">
+                                        <div class="item">
+                                            <div class="ribbon-featured">Sales</div>
+                                            <!--end ribbon-->
+                                            <div class="wrapper">
+                                                <div class="image">
+                                                    <h3>
+                                                        <a th:href="@{/real-estate/detail/__${row.id}__}" class="tag category" th:text="${row.category}">Home & Decor</a>
+                                                        <span class="tag">Offer</span>
+                                                    </h3>
+                                                    <a th:href="@{/real-estate/detail/__${row.id}__}" class="image-wrapper background-image">
+                                                        <img th:src="@{${row.realEstateImages[0].image}}" alt="">
+                                                    </a>
+                                                </div>
+                                                <!--end image-->
+                                                <h4 class="location">
+                                                    <a th:href="@{/real-estate/detail/__${row.id}__}" th:text="${row.province}"></a>
+                                                </h4>
+                                                <div class="price" th:text="${row.totalprice}"></div>
+                                                <div class="meta">
+                                                    <figure>
+                                                        <i class="fa fa-location-arrow"></i> [[${row.totalArea}]]m<sup>2</sup>
+                                                    </figure>
+                                                    <figure>
+                                                        <a th:href="@{/search-user/__${row.user.id}__/1}">
+                                                            <i class="fa fa-user"></i> [[${realEstates.user.fullName}]]
+                                                        </a>
+                                                    </figure>
+                                                </div>
+                                                <!--end meta-->
+                                            </div>
+                                            <!--end wrapper-->
+                                        </div>
+                                        <!--end item-->
+                                        </th:block>
+                                    </th:block>
+                                </div>
+
+                            </section>
+                            <section>
+                                <h2>Tìm kiếm</h2>
+                                <!--============ Side Bar Search Form ===========================================-->
+                                <div th:replace="fragments/home/sidebar-form.html :: sidebar-form"> </div>
+<!--
+                                ============ End Side Bar Search Form =======================================-->
+                            </section>
+                        </aside>
+                    </div>
+                    <!--============ End Sidebar ================================================================-->
+                </div>
+            </div>
+            <!--end container-->
+        </section>
+        <!--end block-->
+    </section>
+    <!--end content-->
+
+
+    <!--*********************************************************************************************************-->
+    <!--************ FOOTER *************************************************************************************-->
+    <!--*********************************************************************************************************-->
+    <footer class="footer" th:replace="fragments/home/footer.html :: footer">
+    </footer>
+    <!--end footer-->
+</div>
+<!--end page-->
+
+<div id="foot-script" th:replace="fragments/home/foot-script.html :: foot-script">
+</div>
+
+
+
+</body>
+</html>
